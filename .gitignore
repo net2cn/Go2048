@@ -1,0 +1,7 @@
+/.vscode
+/.VSCodeCounter
+/roms
+/debug
+/release
+go.sum
+__debug_bin
