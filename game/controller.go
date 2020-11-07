@@ -1,6 +1,8 @@
 package game
 
 import (
+	"fmt"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -29,6 +31,7 @@ func NewController(width int32, height int32, fontPath string, fontSize int, win
 
 func (controller *Controller) Update() {
 	keyState := sdl.GetKeyboardState()
+	// Exit game.
 	if keyState[sdl.SCANCODE_ESCAPE] != 0 {
 		controller.exitFlag = true
 		return
@@ -42,7 +45,12 @@ func (controller *Controller) Update() {
 			return
 		case *sdl.KeyboardEvent:
 			if !controller.inputLock {
-				controller.GameBoard.Update(t.Keysym.Sym)
+				if t.Keysym.Sym == sdl.K_r { // Reset game.
+					fmt.Println("Reseting game...")
+					controller.GameBoard = NewGameBoard()
+				} else {
+					controller.GameBoard.Update(t.Keysym.Sym)
+				}
 			}
 
 			// Anti-jittering

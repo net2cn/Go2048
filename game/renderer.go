@@ -2,10 +2,28 @@ package game
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
 )
+
+var colorTable map[string]uint32 = map[string]uint32{
+	"Background": 0x00fbf8ef,
+	"GameBoard":  0x00bbada0,
+	"Tile0":      0xc4eee4da,
+	"Tile2":      0x00eee4da,
+	"Tile4":      0x00ede0c8,
+	"Tile8":      0x00f2b179,
+	"Tile16":     0x00f59563,
+	"Tile32":     0x00f67c5f,
+	"Tile64":     0x00f65e3b,
+	"Tile128":    0x00edcf72,
+	"Tile256":    0x00edcc61,
+	"Tile512":    0x00edc850,
+	"Tile1024":   0x00edc53f,
+	"Tile2048":   0x00edc22e,
+}
 
 type Renderer struct {
 	window   *sdl.Window
@@ -107,7 +125,22 @@ func (renderer *Renderer) drawPartialSprite(dstX int, dstY int, sprite *sdl.Surf
 
 func (renderer *Renderer) Update(gameBoard GameBoard) {
 	// Render game.
-	renderer.drawString(2, 406, "Debugger", &sdl.Color{R: 255, G: 255, B: 0, A: 0})
+	// 0xAARRGGBB
+	renderer.buffer.FillRect(&sdl.Rect{X: 0, Y: 0, W: renderer.buffer.W, H: renderer.buffer.H}, colorTable["Background"])                        // Fill Background.
+	renderer.buffer.FillRect(&sdl.Rect{X: 0 + 15, Y: 0 + 15, W: renderer.buffer.H - 15*2, H: renderer.buffer.H - 15*2}, colorTable["GameBoard"]) // Fill Game Board Background.
+	for x := 0; x < 4; x++ {
+		for y := 0; y < 4; y++ {
+			// Render tiles.
+			tile := strconv.Itoa(gameBoard.board[y][x])
+			tileName := "Tile" + tile
+			renderer.buffer.FillRect(&sdl.Rect{X: int32(0 + 15 + 10 + x*110), Y: int32(0 + 15 + 10 + y*110), W: 100, H: 100}, colorTable[tileName])
+			if tile != "0" {
+				renderer.drawString(0+15+10+x*110+45-((len(tile)-1)*5), 0+15+10+y*110+45, tile, &sdl.Color{R: 0, G: 0, B: 0, A: 0})
+			}
+		}
+	}
+	renderer.drawString(480, 15, "Score", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
+	renderer.drawString(480, 30, strconv.Itoa(gameBoard.GameScore), &sdl.Color{R: 0, G: 0, B: 0, A: 0})
 
 	// Swap buffer and present our rendered content.
 	renderer.window.UpdateSurface()

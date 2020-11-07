@@ -45,12 +45,16 @@ func (gameBoard *GameBoard) generateNewTile() {
 	}
 
 	if len(emptyTiles) < 1 {
-		gameBoard.GameOverFlag = true
 		return
 	}
 
 	rand.Seed(time.Now().Unix())
+
 	maximum := rand.Intn(2) + 1
+	if maximum > len(emptyTiles) {
+		maximum = len(emptyTiles)
+	}
+
 	for i := 0; i < maximum; i++ {
 		idx := rand.Intn(len(emptyTiles))
 		value := (rand.Intn(2) + 1) * 2
@@ -72,6 +76,10 @@ func (gameBoard *GameBoard) rotateBoard(times int) {
 			}
 		}
 	}
+}
+
+func (gameBoard *GameBoard) checkIsGameOver() {
+
 }
 
 func (gameBoard *GameBoard) applyTilesCalculation(direction int) {
@@ -125,14 +133,15 @@ func (gameBoard *GameBoard) Update(keyState sdl.Keycode) {
 		input = 3
 	}
 
-	if input != -1 && gameBoard.GameOverFlag != true {
-		gameBoard.applyTilesCalculation(input)
-		gameBoard.generateNewTile()
-		gameBoard.PrintBoard()
-		fmt.Println("Score: " + strconv.Itoa(gameBoard.GameScore))
-	}
-
-	if gameBoard.GameOverFlag == true {
+	if gameBoard.GameOverFlag != true {
+		if input != -1 {
+			gameBoard.applyTilesCalculation(input)
+			gameBoard.generateNewTile()
+			gameBoard.checkIsGameOver()
+			gameBoard.PrintBoard()
+			fmt.Println("Score: " + strconv.Itoa(gameBoard.GameScore))
+		}
+	} else {
 		fmt.Println("Game over!")
 	}
 }
