@@ -142,6 +142,16 @@ func (renderer *Renderer) Update(gameBoard GameBoard) {
 	renderer.drawString(480, 15, "Score", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
 	renderer.drawString(480, 30, strconv.Itoa(gameBoard.GameScore), &sdl.Color{R: 0, G: 0, B: 0, A: 0})
 
+	if gameBoard.GameOverFlag == true {
+		renderer.drawString(320-25, 240-10, "Game Over!", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
+		renderer.drawString(320-75, 240+10, "Press \"R\" to restart.", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
+	}
+
+	if gameBoard.AccomplishedFlag == true && gameBoard.ContinueFlag == false {
+		renderer.drawString(320-20, 240-10, "You Won!", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
+		renderer.drawString(320-90, 240+10, "Press \"Enter\" to continue.", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
+	}
+
 	// Swap buffer and present our rendered content.
 	renderer.window.UpdateSurface()
 	renderer.buffer.Blit(nil, renderer.surface, nil)

@@ -13,8 +13,10 @@ type GameBoard struct {
 	lastBoard [4][4]int
 	board     [4][4]int
 
-	GameScore    int
-	GameOverFlag bool
+	GameScore        int
+	GameOverFlag     bool
+	AccomplishedFlag bool
+	ContinueFlag     bool
 }
 
 func NewGameBoard() *GameBoard {
@@ -79,7 +81,31 @@ func (gameBoard *GameBoard) rotateBoard(times int) {
 }
 
 func (gameBoard *GameBoard) checkIsGameOver() {
+	horizontalMovement := 0
+	verticalMovement := 0
 
+	for x := 0; x < 4; x++ {
+		for y := 0; y < 4; y++ {
+			if y < 3 {
+				if gameBoard.board[x][y] == gameBoard.board[x][y+1] || gameBoard.board[x][y] == 0 {
+					horizontalMovement++
+				}
+			}
+			if x < 3 {
+				if gameBoard.board[x][y] == gameBoard.board[x+1][y] || gameBoard.board[x][y] == 0 {
+					verticalMovement++
+				}
+			}
+
+			if gameBoard.board[x][y] == 2048 {
+				gameBoard.AccomplishedFlag = true
+			}
+		}
+	}
+
+	if horizontalMovement+verticalMovement < 1 {
+		gameBoard.GameOverFlag = true
+	}
 }
 
 func (gameBoard *GameBoard) applyTilesCalculation(direction int) {
@@ -131,15 +157,21 @@ func (gameBoard *GameBoard) Update(keyState sdl.Keycode) {
 	case sdl.K_DOWN:
 		fmt.Println("Down pressed.")
 		input = 3
+	case sdl.K_KP_ENTER:
+		if gameBoard.AccomplishedFlag == true {
+			gameBoard.ContinueFlag = true
+		}
 	}
 
 	if gameBoard.GameOverFlag != true {
-		if input != -1 {
+		if input != -1 && (gameBoard.AccomplishedFlag != true || gameBoard.ContinueFlag == true) {
 			gameBoard.applyTilesCalculation(input)
 			gameBoard.generateNewTile()
 			gameBoard.checkIsGameOver()
 			gameBoard.PrintBoard()
 			fmt.Println("Score: " + strconv.Itoa(gameBoard.GameScore))
+		} else {
+			fmt.Print("You won! Press Enter to continue.")
 		}
 	} else {
 		fmt.Println("Game over!")

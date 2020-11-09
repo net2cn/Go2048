@@ -10,7 +10,7 @@ import (
 var windowTitle string = "Go2048 SDL2"
 var fontPath string = "./assets/UbuntuMono-R.ttf" // Man, do not use a variable-width font! It looks too ugly with that!
 var fontSize int = 20
-var windowWidth, windowHeight int32 = 680, 480
+var windowWidth, windowHeight int32 = 640, 480
 
 func main() {
 	fmt.Println(windowTitle)
