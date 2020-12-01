@@ -69,8 +69,6 @@ func (controller *Controller) Update() {
 	}
 
 	controller.Renderer.Update(*controller.GameBoard)
-
-	controller.exitFlag = false
 }
 
 func (controller *Controller) Start() {

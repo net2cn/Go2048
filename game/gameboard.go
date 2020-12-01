@@ -163,8 +163,8 @@ func (gameBoard *GameBoard) Update(keyState sdl.Keycode) {
 		}
 	}
 
-	if gameBoard.GameOverFlag != true {
-		if input != -1 && (gameBoard.AccomplishedFlag != true || gameBoard.ContinueFlag == true) {
+	if !gameBoard.GameOverFlag{
+		if input != -1 && (!gameBoard.AccomplishedFlag || gameBoard.ContinueFlag == true) {
 			gameBoard.applyTilesCalculation(input)
 			gameBoard.generateNewTile()
 			gameBoard.checkIsGameOver()
