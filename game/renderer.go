@@ -139,9 +139,18 @@ func (renderer *Renderer) Update(gameBoard GameBoard) {
 			}
 		}
 	}
-	renderer.drawString(480, 15, "Score", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
-	renderer.drawString(480, 30, strconv.Itoa(gameBoard.GameScore), &sdl.Color{R: 0, G: 0, B: 0, A: 0})
+	// Draw score.
+	var scoreAnchorY int = 15
+	renderer.drawString(480, scoreAnchorY+15*0, "Score", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
+	renderer.drawString(480, scoreAnchorY+15*1, strconv.Itoa(gameBoard.GameScore), &sdl.Color{R: 0, G: 0, B: 0, A: 0})
 
+	// Draw key hint.
+	var keyAnchorY int = 90
+	renderer.drawString(480, keyAnchorY+15*0, "Keys:", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
+	renderer.drawString(480, keyAnchorY+15*1, "Arrow keys: Move", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
+	renderer.drawString(480, keyAnchorY+15*2, "R: Reset", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
+
+	// Draw game over overlay.
 	if gameBoard.GameOverFlag == true {
 		renderer.drawString(320-25, 240-10, "Game Over!", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
 		renderer.drawString(320-75, 240+10, "Press \"R\" to restart.", &sdl.Color{R: 0, G: 0, B: 0, A: 0})
