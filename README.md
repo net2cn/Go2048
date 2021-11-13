@@ -4,7 +4,7 @@ Yet another 2048 game implemented in golang with [go-sdl2](https://github.com/ve
 ---
 
 ## Screenshots
-![screenshot_1](./img/screenshot_2020-11-09_173912.png)
+![screenshot_1](./img/screenshot_2021-11-13_111423.png)
 
 ## Build
 Install [go-sdl2](https://github.com/veandco/go-sdl2). After that simply type
