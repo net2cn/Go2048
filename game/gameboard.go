@@ -146,7 +146,7 @@ func (gameBoard *GameBoard) Update(keyState sdl.Keycode) {
 
 	switch keyState {
 	case sdl.K_RIGHT:
-		fmt.Println("Rigth pressed.")
+		fmt.Println("Right pressed.")
 		input = 0
 	case sdl.K_UP:
 		fmt.Println("Up pressed.")
@@ -163,7 +163,7 @@ func (gameBoard *GameBoard) Update(keyState sdl.Keycode) {
 		}
 	}
 
-	if !gameBoard.GameOverFlag{
+	if !gameBoard.GameOverFlag {
 		if input != -1 && (!gameBoard.AccomplishedFlag || gameBoard.ContinueFlag == true) {
 			gameBoard.applyTilesCalculation(input)
 			gameBoard.generateNewTile()
